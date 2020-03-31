@@ -1,0 +1,4 @@
+package validator
+
+class ModelValidator {
+}

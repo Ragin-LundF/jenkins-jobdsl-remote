@@ -1,0 +1,24 @@
+plugins {
+    id 'groovy'
+}
+
+group 'de.lundf'
+version '0.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+wrapper {
+    gradleVersion = '6.3'
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:3.0.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
+}
+
+test {
+    useJUnitPlatform()
+}
