@@ -11,7 +11,6 @@ final class Json2ModelParser {
      * @return  JobDslPipelineModel with mapped data from JSON file
      */
     static JobsModel parseJobJsonToModel(String jobDescriptionPath) {
-        println "INFO: Try to parse JSON file from ${jobDescriptionPath}"
         JsonSlurper jsonSlurper = new JsonSlurper()
         JobsModel jobsModel = jsonSlurper.parse(new File(jobDescriptionPath))
 
