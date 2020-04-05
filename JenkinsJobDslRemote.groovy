@@ -1,3 +1,4 @@
+import groovy.transform.Field
 import jenkins.JenkinsCleanupTask
 import jobs.JenkinsJobConstants
 import model.BaseJobDslPipelineModel
@@ -8,7 +9,9 @@ import parser.Json2ModelParser
 import validator.ModelValidator
 
 // define variables
+@Field
 final String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "jobdefinition/jenkins-dsl-jobs.json"
+@Field
 ArrayList<String> definedJobs = [JenkinsJobConstants.SEED_JOB_NAME]
 
 // first get workspace directory
