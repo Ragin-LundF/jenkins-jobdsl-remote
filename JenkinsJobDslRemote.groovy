@@ -10,7 +10,7 @@ import model.PipelineJobModel
 import parser.Json2ModelParser
 import validator.ModelValidator
 
-
+// first get workspace directory
 hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
 println("Workspace: " + workspace?.toURI()?.getPath())
 JenkinsJobDslRemoteScript jenkinsJobDslRemote = new JenkinsJobDslRemoteScript()
@@ -20,7 +20,7 @@ jenkinsJobDslRemote.execute(workspace?.toURI()?.getPath() + JenkinsJobDslRemoteS
  * Jenkins JobDSL Remote Script
  */
 class JenkinsJobDslRemoteScript {
-    public final static String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "../jobdefinition/jenkins-dsl-jobs.json"
+    public final static String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "jobdefinition/jenkins-dsl-jobs.json"
     private ArrayList<String> definedJobs = [JenkinsJobConstants.SEED_JOB_NAME]
 
     /**
