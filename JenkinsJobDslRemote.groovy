@@ -46,7 +46,9 @@ class JenkinsJobDslRemoteScript {
      * @return
      */
     protected static JobsModel loadAndParseModel(String path) {
-        assert new File(path).exists(): "Unable to load job definition file (${path})"
+        if(! new File(path).exists()) {
+            println("ERROR: Unable to load job definition file (${path})")
+        }
         return Json2ModelParser.parseJobJsonToModel(path)
     }
 
