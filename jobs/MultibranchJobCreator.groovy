@@ -2,7 +2,6 @@ package jobs
 
 import model.BaseJobDslPipelineModel
 import model.MultibranchModel
-import javaposse.*
 
 class MultibranchJobCreator implements IJobCreator {
     /**
@@ -15,7 +14,7 @@ class MultibranchJobCreator implements IJobCreator {
         if (model instanceof MultibranchModel) {
             MultibranchModel multibranchModel = model as MultibranchModel
             // define the job with JobDSL closure
-            JobParent.multibranchPipelineJob(multibranchModel.getJobName()) {
+            javaposse.jobdsl.dsl.DslFactory.multibranchPipelineJob(multibranchModel.getJobName()) {
                 factory {
                     workflowBranchProjectFactory {
                         scriptPath(multibranchModel.getPipelineScriptPath())
