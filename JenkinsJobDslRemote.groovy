@@ -78,7 +78,7 @@ private void processJobs(JobsModel jobsModel) {
         for (MultibranchModel multibranchJob in jobsModel.getMultiBranchJobs()) {
             // first add the job to the list of valid jobs
             definedJobs << multibranchJob.getJobName()
-            createMultibranchPipelineJob(multibranchJob, jobsModel.getJobDslJobsMap().get(JobsModel.JOB_TYPE.MULTIBRANCH_JOB))
+            createMultibranchPipelineJob(multibranchJob)
         }
         println "[INFO][Job processor]  Processing multibranch jobs finished..."
     }
@@ -90,70 +90,68 @@ private void processJobs(JobsModel jobsModel) {
         for (PipelineJobModel pipelineJobModel in jobsModel.getPipelineJobs()) {
             // first add the job to the list of valid jobs
             definedJobs << pipelineJobModel.getJobName()
-            createPipelineJob(pipelineJobModel, jobsModel.getJobDslJobsMap().get(JobsModel.JOB_TYPE.PIPELINE_JOB))
+            createPipelineJob(pipelineJobModel)
         }
         println "[INFO][Job processor]  Processing pipeline jobs finished..."
     }
     println "[INFO][Job processor] Finished..."
 }
 
-void createMultibranchPipelineJob(final BaseJobDslPipelineModel model) {
-    if (model instanceof MultibranchModel) {
-        MultibranchModel multibranchModel = model as MultibranchModel
-        // define the job with JobDSL closure
-        multibranchPipelineJob(multibranchModel.getJobName()) {
-            factory {
-                workflowBranchProjectFactory {
-                    scriptPath(multibranchModel.getPipelineScriptPath())
-                }
-            }
-            branchSources {
-                git {
-                    id(multibranchModel.getGit().getRepositoryId())
-                    remote(multibranchModel.getGit().getRepositoryUrl())
-                    // as an alternative it is possible to set the credentials id via system environment variable
-                    String credentials = (multibranchModel.getGit().getCredentialsId() != null) ? multibranchModel.getGit().getCredentialsId() : System.getenv("GIT_CREDENTIALS_ID")
-                    credentialsId(credentials)
-                }
-            }
-            description(multibranchModel.getJobDescription())
-            triggers {
-                cron(multibranchModel.getGit().getRepositoryTrigger())
+/**
+ * Create multibranchPipelineJob with Jenkins JobDSL language
+ *
+ * @param model Pipeline model for multibranch pipeline job
+ */
+void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
+    // define the job with JobDSL closure
+    multibranchPipelineJob(multibranchModel.getJobName()) {
+        factory {
+            workflowBranchProjectFactory {
+                scriptPath(multibranchModel.getPipelineScriptPath())
             }
         }
-    } else {
-        println "[ERROR][create multibranch pipeline job] provided model was not a MultibranchModel"
-        println "[ERROR][create multibranch pipeline job] ${model}"
+        branchSources {
+            git {
+                id(multibranchModel.getGit().getRepositoryId())
+                remote(multibranchModel.getGit().getRepositoryUrl())
+                // as an alternative it is possible to set the credentials id via system environment variable
+                String credentials = (multibranchModel.getGit().getCredentialsId() != null) ? multibranchModel.getGit().getCredentialsId() : System.getenv("GIT_CREDENTIALS_ID")
+                credentialsId(credentials)
+            }
+        }
+        description(multibranchModel.getJobDescription())
+        triggers {
+            cron(multibranchModel.getGit().getRepositoryTrigger())
+        }
     }
 }
 
-void createPipelineJob(final BaseJobDslPipelineModel model) {
-    if (model instanceof PipelineJobModel) {
-        PipelineJobModel pipelineJobModel = model as PipelineJobModel
-        pipelineJob(pipelineJobModel.getJobName()) {
-            description(pipelineJobModel.getJobDescription())
-            triggers {
-                scm(pipelineJobModel.getGit().getRepositoryTrigger())
-                cron(pipelineJobModel.getCronTrigger())
-            }
-            definition {
-                cpsScm {
-                    scm {
-                        git {
-                            remote {
-                                name(pipelineJobModel.getGit().getRepositoryId())
-                                url(pipelineJobModel.getGit().getRepositoryUrl())
-                                String credentials = (pipelineJobModel.getGit().getCredentialsId() != null) ? pipelineJobModel.getGit().getCredentialsId() : System.getenv("GIT_CREDENTIALS_ID")
-                                credentials(credentials)
-                            }
-                            scriptPath(pipelineJobModel.getPipelineScriptPath())
+/**
+ * Create pipelineJob with Jenkins JobDSL language
+ *
+ * @param model Pipeline model for pipeline job
+ */
+void createPipelineJob(final PipelineJobModel pipelineJobModel) {
+    pipelineJob(pipelineJobModel.getJobName()) {
+        description(pipelineJobModel.getJobDescription())
+        triggers {
+            scm(pipelineJobModel.getGit().getRepositoryTrigger())
+            cron(pipelineJobModel.getCronTrigger())
+        }
+        definition {
+            cpsScm {
+                scm {
+                    git {
+                        remote {
+                            name(pipelineJobModel.getGit().getRepositoryId())
+                            url(pipelineJobModel.getGit().getRepositoryUrl())
+                            String credentials = (pipelineJobModel.getGit().getCredentialsId() != null) ? pipelineJobModel.getGit().getCredentialsId() : System.getenv("GIT_CREDENTIALS_ID")
+                            credentials(credentials)
                         }
+                        scriptPath(pipelineJobModel.getPipelineScriptPath())
                     }
                 }
             }
         }
-    } else {
-        println "[ERROR][create pipeline job] provided model was not a PipelineJobModel"
-        println "[ERROR][create multibranch pipeline job] ${model}"
     }
 }
