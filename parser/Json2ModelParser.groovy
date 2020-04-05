@@ -12,7 +12,7 @@ final class Json2ModelParser {
      */
     static JobsModel parseJobJsonToModel(String jobDescriptionPath) {
         JsonSlurper jsonSlurper = new JsonSlurper()
-        JobsModel jobsModel = jsonSlurper.parse(new File(jobDescriptionPath))
+        JobsModel jobsModel = jsonSlurper.parse(streamFileFromWorkspace(jobDescriptionPath))
 
         return jobsModel
     }

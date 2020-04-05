@@ -9,8 +9,6 @@ import model.PipelineJobModel
 import parser.Json2ModelParser
 import validator.ModelValidator
 
-String currentDir = new File(".").getAbsolutePath()
-println("Current directory: ${currentDir}")
 JenkinsJobDslRemoteScript jenkinsJobDslRemote = new JenkinsJobDslRemoteScript()
 jenkinsJobDslRemote.execute("${currentDir}${JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH}")
 
@@ -50,7 +48,6 @@ class JenkinsJobDslRemoteScript {
      * @return
      */
     protected static JobsModel loadAndParseModel(String path) {
-        assert new File(path).exists() : "ERROR: Unable to load job definition file (${path})"
         return Json2ModelParser.parseJobJsonToModel(path)
     }
 
