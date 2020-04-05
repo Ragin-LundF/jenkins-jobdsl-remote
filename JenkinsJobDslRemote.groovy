@@ -13,7 +13,7 @@ import validator.ModelValidator
 hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
 println("Workspace: " + workspace?.toURI()?.getPath())
 
-Map<JobsModel.JOB_TYPE, Object> jobDslJobsMap = new HashMap()
+Map jobDslJobsMap = new HashMap()
 jobDslJobsMap.put(JobsModel.JOB_TYPE.MULTIBRANCH_JOB, multibranchWorkflowJob)
 jobDslJobsMap.put(JobsModel.JOB_TYPE.PIPELINE_JOB, pipelineJob)
 
@@ -33,7 +33,7 @@ class JenkinsJobDslRemoteScript {
      *
      * @param jobsFile  Path to the jobs file
      */
-    void execute(String jobsFile, Map<String, Object> jobDslJobsMap) {
+    void execute(String jobsFile, Map jobDslJobsMap) {
         // Load model
         println "[INFO][JSON Parser] Try to parse JSON file from ${jobsFile}"
         JobsModel jobsModel = loadAndParseModel(jobsFile)
