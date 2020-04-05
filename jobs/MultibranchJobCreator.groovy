@@ -2,6 +2,7 @@ package jobs
 
 import model.BaseJobDslPipelineModel
 import model.MultibranchModel
+import javaposse.*
 
 class MultibranchJobCreator implements IJobCreator {
     /**

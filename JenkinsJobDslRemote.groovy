@@ -1,4 +1,3 @@
-import groovy.transform.SourceURI
 import jenkins.JenkinsCleanupTask
 import jobs.IJobCreator
 import jobs.JenkinsJobConstants
@@ -13,6 +12,8 @@ import validator.ModelValidator
 // first get workspace directory
 hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
 println("Workspace: " + workspace?.toURI()?.getPath())
+
+// start the script
 JenkinsJobDslRemoteScript jenkinsJobDslRemote = new JenkinsJobDslRemoteScript()
 jenkinsJobDslRemote.execute(workspace?.toURI()?.getPath() + JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
 

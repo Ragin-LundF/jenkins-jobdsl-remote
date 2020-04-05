@@ -2,6 +2,7 @@ package jobs
 
 import model.BaseJobDslPipelineModel
 import model.PipelineJobModel
+import javaposse.*
 
 class PipelineJobCreator implements IJobCreator {
     /**
