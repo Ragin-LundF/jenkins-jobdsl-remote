@@ -6,4 +6,10 @@ import groovy.transform.ToString
 class JobsModel {
     List<MultibranchModel> multiBranchJobs
     List<PipelineJobModel> pipelineJobs
+    Map<JOB_TYPE, Object> jobDslJobsMap
+
+    static enum JOB_TYPE {
+        MULTIBRANCH_JOB,
+        PIPELINE_JOB
+    }
 }

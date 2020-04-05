@@ -13,9 +13,13 @@ import validator.ModelValidator
 hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
 println("Workspace: " + workspace?.toURI()?.getPath())
 
+Map<JobsModel.JOB_TYPE, Object> jobDslJobsMap = new HashMap()
+jobDslJobsMap.put(JobsModel.JOB_TYPE.MULTIBRANCH_JOB, multibranchWorkflowJob)
+jobDslJobsMap.put(JobsModel.JOB_TYPE.PIPELINE_JOB, pipelineJob)
+
 // start the script
 JenkinsJobDslRemoteScript jenkinsJobDslRemote = new JenkinsJobDslRemoteScript()
-jenkinsJobDslRemote.execute(workspace?.toURI()?.getPath() + JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
+jenkinsJobDslRemote.execute(workspace?.toURI()?.getPath() + JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH, jobDslJobsMap)
 
 /**
  * Jenkins JobDSL Remote Script
@@ -29,13 +33,15 @@ class JenkinsJobDslRemoteScript {
      *
      * @param jobsFile  Path to the jobs file
      */
-    void execute(String jobsFile) {
+    void execute(String jobsFile, Map<String, Object> jobDslJobsMap) {
         // Load model
         println "[INFO][JSON Parser] Try to parse JSON file from ${jobsFile}"
         JobsModel jobsModel = loadAndParseModel(jobsFile)
         println "[INFO][JSON Parser] Finished..."
 
         if (jobsModel != null) {
+            // assign JobDsl jobs map
+            jobsModel.jobDslJobsMap = jobDslJobsMap
             // Validating
             validateModel(jobsModel)
             // process jobs
@@ -82,7 +88,7 @@ class JenkinsJobDslRemoteScript {
             for (MultibranchModel multibranchJob in jobsModel.getMultiBranchJobs()) {
                 // first add the job to the list of valid jobs
                 this.definedJobs << multibranchJob.getJobName()
-                multibranchJobCreator.createJob(multibranchJob)
+                multibranchJobCreator.createJob(multibranchJob, jobsModel.getJobDslJobsMap().get(JobsModel.JOB_TYPE.MULTIBRANCH_JOB))
             }
             println "[INFO][Job processor]  Processing multibranch jobs finished..."
         }
@@ -95,7 +101,7 @@ class JenkinsJobDslRemoteScript {
             for (PipelineJobModel pipelineJobModel in jobsModel.getPipelineJobs()) {
                 // first add the job to the list of valid jobs
                 this.definedJobs << pipelineJobModel.getJobName()
-                pipelineJobCreator.createJob(pipelineJobModel)
+                pipelineJobCreator.createJob(pipelineJobModel, jobsModel.getJobDslJobsMap().get(JobsModel.JOB_TYPE.PIPELINE_JOB))
             }
             println "[INFO][Job processor]  Processing pipeline jobs finished..."
         }

@@ -10,11 +10,11 @@ class MultibranchJobCreator implements IJobCreator {
      * @param model  an instance of MultibranchModel with the parameter to create the job
      */
     @Override
-    void createJob(final BaseJobDslPipelineModel model) {
+    void createJob(final BaseJobDslPipelineModel model, def multibranchPipelineJob) {
         if (model instanceof MultibranchModel) {
             MultibranchModel multibranchModel = model as MultibranchModel
             // define the job with JobDSL closure
-            javaposse.jobdsl.dsl.DslFactory.multibranchPipelineJob(multibranchModel.getJobName()) {
+            multibranchPipelineJob(multibranchModel.getJobName()) {
                 factory {
                     workflowBranchProjectFactory {
                         scriptPath(multibranchModel.getPipelineScriptPath())

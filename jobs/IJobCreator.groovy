@@ -11,5 +11,5 @@ interface IJobCreator {
      *
      * @param model  an instance of BaseJobDslPipelineModel with the parameter to create the job
      */
-    void createJob(final BaseJobDslPipelineModel model)
+    void createJob(final BaseJobDslPipelineModel model, def job)
 }

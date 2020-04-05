@@ -2,7 +2,6 @@ package jobs
 
 import model.BaseJobDslPipelineModel
 import model.PipelineJobModel
-import javaposse.*
 
 class PipelineJobCreator implements IJobCreator {
     /**
@@ -11,7 +10,7 @@ class PipelineJobCreator implements IJobCreator {
      * @param model an instance of PipelineJobModel with the parameter to create the job
      */
     @Override
-    void createJob(final BaseJobDslPipelineModel model) {
+    void createJob(final BaseJobDslPipelineModel model, def pipelineJob) {
         if (model instanceof PipelineJobModel) {
             PipelineJobModel pipelineJobModel = model as PipelineJobModel
             pipelineJob(pipelineJobModel.getJobName()) {
