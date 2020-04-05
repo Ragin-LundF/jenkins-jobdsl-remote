@@ -16,7 +16,7 @@ jenkinsJobDslRemote.execute(JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JS
  * Jenkins JobDSL Remote Script
  */
 class JenkinsJobDslRemoteScript {
-    public final static String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "jobdefinition/jenkins-dsl-jobs.json"
+    public final static String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "${env.WORKSPACE}/jobdefinition/jenkins-dsl-jobs.json"
     private ArrayList<String> definedJobs = [JenkinsJobConstants.SEED_JOB_NAME]
 
     /**
