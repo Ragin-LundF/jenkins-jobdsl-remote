@@ -15,7 +15,7 @@ class MultibranchJobCreator implements IJobCreator {
         if (model instanceof MultibranchModel) {
             MultibranchModel multibranchModel = model as MultibranchModel
             // define the job with JobDSL closure
-            multibranchPipelineJob(multibranchModel.getJobName()) {
+            JobParent.multibranchPipelineJob(multibranchModel.getJobName()) {
                 factory {
                     workflowBranchProjectFactory {
                         scriptPath(multibranchModel.getPipelineScriptPath())
