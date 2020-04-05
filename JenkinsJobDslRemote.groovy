@@ -30,12 +30,14 @@ class JenkinsJobDslRemoteScript {
         JobsModel jobsModel = loadAndParseModel(jobsFile)
         println "[INFO][JSON Parser] Finished..."
 
-        // Validating
-        validateModel(jobsModel)
-        // process jobs
-        processJobs(jobsModel)
-        // cleanup jobs
-        JenkinsCleanupTask.cleanupJobs(this.definedJobs)
+        if (jobsModel != null) {
+            // Validating
+            validateModel(jobsModel)
+            // process jobs
+            processJobs(jobsModel)
+            // cleanup jobs
+            JenkinsCleanupTask.cleanupJobs(this.definedJobs)
+        }
     }
 
     /**
@@ -48,8 +50,10 @@ class JenkinsJobDslRemoteScript {
     protected static JobsModel loadAndParseModel(String path) {
         if(! new File(path).exists()) {
             System.err.println("ERROR: Unable to load job definition file (${path})")
+        } else {
+            return Json2ModelParser.parseJobJsonToModel(path)
         }
-        return Json2ModelParser.parseJobJsonToModel(path)
+        return null
     }
 
     /**
