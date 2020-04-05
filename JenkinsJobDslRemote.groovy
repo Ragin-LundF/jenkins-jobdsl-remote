@@ -10,7 +10,7 @@ import parser.Json2ModelParser
 import validator.ModelValidator
 
 JenkinsJobDslRemoteScript jenkinsJobDslRemote = new JenkinsJobDslRemoteScript()
-jenkinsJobDslRemote.execute((args != null && args.size > 0) ? args[0] : JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
+jenkinsJobDslRemote.execute(JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
 
 /**
  * Jenkins JobDSL Remote Script
