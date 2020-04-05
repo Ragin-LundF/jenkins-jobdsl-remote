@@ -1,8 +1,5 @@
 import jenkins.JenkinsCleanupTask
-import jobs.IJobCreator
 import jobs.JenkinsJobConstants
-import jobs.MultibranchJobCreator
-import jobs.PipelineJobCreator
 import model.BaseJobDslPipelineModel
 import model.JobsModel
 import model.MultibranchModel
