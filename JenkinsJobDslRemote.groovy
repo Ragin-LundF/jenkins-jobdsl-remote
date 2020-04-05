@@ -1,3 +1,4 @@
+import groovy.transform.SourceURI
 import jenkins.JenkinsCleanupTask
 import jobs.IJobCreator
 import jobs.JenkinsJobConstants
@@ -9,14 +10,18 @@ import model.PipelineJobModel
 import parser.Json2ModelParser
 import validator.ModelValidator
 
+@SourceURI
+URI sourceUri
+
+println("Path: " + sourceUri.getPath())
 JenkinsJobDslRemoteScript jenkinsJobDslRemote = new JenkinsJobDslRemoteScript()
-jenkinsJobDslRemote.execute(JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
+jenkinsJobDslRemote.execute(sourceUri.getPath() + JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
 
 /**
  * Jenkins JobDSL Remote Script
  */
 class JenkinsJobDslRemoteScript {
-    public final static String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "/jobdefinition/jenkins-dsl-jobs.json"
+    public final static String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "../jobdefinition/jenkins-dsl-jobs.json"
     private ArrayList<String> definedJobs = [JenkinsJobConstants.SEED_JOB_NAME]
 
     /**
