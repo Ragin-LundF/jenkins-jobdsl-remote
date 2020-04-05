@@ -35,7 +35,7 @@ void execute(String jobsFile) {
         // process jobs
         processJobs(jobsModel)
         // cleanup jobs
-        JenkinsCleanupTask.cleanupJobs(this.definedJobs)
+        JenkinsCleanupTask.cleanupJobs(definedJobs)
     }
 }
 
@@ -74,7 +74,7 @@ private void processJobs(JobsModel jobsModel) {
         // iterate over the multibranch jobs
         for (MultibranchModel multibranchJob in jobsModel.getMultiBranchJobs()) {
             // first add the job to the list of valid jobs
-            this.definedJobs << multibranchJob.getJobName()
+            definedJobs << multibranchJob.getJobName()
             createMultibranchPipelineJob(multibranchJob, jobsModel.getJobDslJobsMap().get(JobsModel.JOB_TYPE.MULTIBRANCH_JOB))
         }
         println "[INFO][Job processor]  Processing multibranch jobs finished..."
@@ -86,7 +86,7 @@ private void processJobs(JobsModel jobsModel) {
         // iterate over the multibranch jobs
         for (PipelineJobModel pipelineJobModel in jobsModel.getPipelineJobs()) {
             // first add the job to the list of valid jobs
-            this.definedJobs << pipelineJobModel.getJobName()
+            definedJobs << pipelineJobModel.getJobName()
             createPipelineJob(pipelineJobModel, jobsModel.getJobDslJobsMap().get(JobsModel.JOB_TYPE.PIPELINE_JOB))
         }
         println "[INFO][Job processor]  Processing pipeline jobs finished..."
