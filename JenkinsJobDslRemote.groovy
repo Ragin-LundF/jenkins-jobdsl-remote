@@ -16,7 +16,7 @@ hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWo
 println "Workspace: ${workspace?.toURI()?.getPath()}"
 
 // start the script
-execute(workspace?.toURI()?.getPath() + DEFAULT_PIPELINE_SCRIPT_JSON_PATH, jobDslJobsMap)
+execute(workspace?.toURI()?.getPath() + DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
 
 /**
  * Execute the job creator
