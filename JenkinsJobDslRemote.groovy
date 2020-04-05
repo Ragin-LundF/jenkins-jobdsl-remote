@@ -9,22 +9,15 @@ import model.PipelineJobModel
 import parser.Json2ModelParser
 import validator.ModelValidator
 
+JenkinsJobDslRemoteScript jenkinsJobDslRemote = new JenkinsJobDslRemoteScript()
+jenkinsJobDslRemote.execute((args != null && args.size > 0) ? args[0] : JenkinsJobDslRemoteScript.DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
+
 /**
  * Jenkins JobDSL Remote Script
  */
-class JenkinsJobDslRemote {
-    private final static String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "../jobdefinition/jenkins-dsl-jobs.json"
+class JenkinsJobDslRemoteScript {
+    public final static String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "../jobdefinition/jenkins-dsl-jobs.json"
     private ArrayList<String> definedJobs = [JenkinsJobConstants.SEED_JOB_NAME]
-    /**
-     * Main method.
-     * This method will be executed, when Jenkins calls this as script.
-     *
-     * @param args  arguments (not used)
-     */
-    static void main(String[] args) {
-        JenkinsJobDslRemote jenkinsJobDslRemote = new JenkinsJobDslRemote()
-        jenkinsJobDslRemote.execute((args != null && args[0] != null) ? args[0] : DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
-    }
 
     /**
      * Execute the job creator
