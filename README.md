@@ -63,6 +63,7 @@ The structure of the JSON looks like described in the example on buttom.
 | `pipelineJobs` | array | *none* | main element for pipeline jobs. It contains a list of pipelineJob objects, which are defining the jobs. |
 | `jobName` | string | *MultibranchJob* or *PipelineJob* | defines the name of the job. (`required`) |
 | `jobDescription` | string | *MultibranchJob* or *PipelineJob* | defines the description of the job, which will be shown in Jenkins. |
+| `view` | string | *none* | defines the view in which the job will be shown in Jenkins. |
 | `pipelineScriptPath` | string | *MultibranchJob* or *PipelineJob* | defines the name of the `Jenkinsfile` script. (`required`) |
 | `cronTrigger` | string | *PipelineJob* | defines cron trigger, to force a build at defined times. |
 | `git` | object | *MultibranchJob* or *PipelineJob* | object, that contains the GIT parameter. (`required`) |
@@ -79,6 +80,7 @@ The structure of the JSON looks like described in the example on buttom.
     {
       "jobName": "myMultibranchJob",
       "jobDescription": "This is a test job",
+      "view": "myJobs",
       "pipelineScriptPath": "Jenkinsfile",
       "git": {
         "repositoryId": "myMultibranchJobId",

@@ -3,6 +3,7 @@
     {
       "jobName": "myMultibranchJob",
       "jobDescription": "This is a test job",
+      "view": "myJobs",
       "pipelineScriptPath": "Jenkinsfile",
       "git": {
         "repositoryId": "myMultibranchJobId",

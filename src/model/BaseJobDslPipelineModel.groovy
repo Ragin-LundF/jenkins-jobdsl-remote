@@ -7,5 +7,6 @@ class BaseJobDslPipelineModel {
     String jobName
     String jobDescription
     String pipelineScriptPath
+    String view
     GitModel git
 }

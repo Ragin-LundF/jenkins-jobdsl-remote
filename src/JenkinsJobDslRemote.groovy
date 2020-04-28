@@ -41,13 +41,15 @@ void execute(String jobsFile) {
     println "[INFO][JSON Parser] Finished..."
 
     if (jobsModel != null) {
-        // Validating
-        validateModel(jobsModel)
-        // process jobs
-        processJobs(jobsModel)
-        // cleanup jobs
         try {
+            // Validating
+            validateModel(jobsModel)
+            // process jobs
+            processJobs(jobsModel)
+            // cleanup jobs
             cleanupJobs(definedJobs)
+            // set views
+            createViewsFromJobs(jobsModel)
         } catch (Exception e) {
             println Throwables.getStackTraceAsString(e)
             jenkinsExecutor.interrupt(Result.FAILURE)
@@ -155,6 +157,30 @@ void cleanupJobs(ArrayList<String> definedPipelineJobItemsList) {
         println("[WARNING] Jenkins instance was null at JenkinsCleanupTask")
     }
     println "[INFO][Cleanup] Cleanup of jobs finished successful..."
+}
+
+/**
+ * Create Views for the jobs
+ * @param jobsModel JobsModel which should be used to create the view
+ */
+void createViewsFromJobs(final JobsModel jobsModel) {
+    Map<String, List<String>> viewMap = Json2ModelParser.createViewModelMap(jobsModel)
+    viewMap.each {
+        String viewName = it.key
+        List<String> jobsList = it.value
+        sectionedView("All") {
+            sections {
+                listView {
+                    name(viewName)
+                    jobs {
+                        for (String jobName : jobsList) {
+                            name(jobName)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 /**
