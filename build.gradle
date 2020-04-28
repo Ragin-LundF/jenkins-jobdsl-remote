@@ -1,0 +1,38 @@
+plugins {
+    id 'groovy'
+}
+
+group 'de.lundf'
+version '0.1.0'
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url "https://repo.jenkins-ci.org/releases"
+    }
+}
+
+wrapper {
+    gradleVersion = '6.3'
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src']
+        }
+    }
+}
+
+dependencies {
+    compileOnly 'org.jenkins-ci.main:jenkins-core:2.233'
+    compileOnly 'org.jenkins-ci.plugins:job-dsl:1.77'
+    implementation 'org.codehaus.groovy:groovy-all:3.0.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
+}
+
+test {
+    useJUnitPlatform()
+}

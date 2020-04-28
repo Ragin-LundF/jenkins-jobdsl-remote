@@ -38,7 +38,7 @@ job('seed_job') {
   steps {
       dsl {
           lookupStrategy('SEED_JOB')
-          external('jobdslscript/JenkinsJobDslRemote.groovy')
+          external('jobdslscript/src/JenkinsJobDslRemote.groovy')
       }
   }
   triggers {

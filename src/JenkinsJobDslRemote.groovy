@@ -1,25 +1,33 @@
+import com.google.common.base.Throwables
 import groovy.transform.Field
-import jenkins.JenkinsCleanupTask
+import hudson.model.TopLevelItem
+import jenkins.model.Jenkins
 import jobs.JenkinsJobConstants
-import model.BaseJobDslPipelineModel
 import model.JobsModel
 import model.MultibranchModel
 import model.PipelineJobModel
 import parser.Json2ModelParser
 import validator.ModelValidator
+import hudson.model.Executor
+import hudson.model.Result
 
 // define variables
 @Field
 final String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "jobdefinition/jenkins-dsl-jobs.json"
 @Field
 ArrayList<String> definedJobs = [JenkinsJobConstants.SEED_JOB_NAME]
+@Field
+Executor jenkinsExecutor = hudson.model.Executor.currentExecutor()
+@Field
+Jenkins jenkinsInstance = Jenkins.instanceOrNull
 
 // first get workspace directory
-hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
+hudson.FilePath workspace = jenkinsExecutor.getCurrentWorkspace()
 println "Workspace: ${workspace?.toURI()?.getPath()}"
 
 // start the script
 execute(workspace?.toURI()?.getPath() + DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
+
 
 /**
  * Execute the job creator
@@ -38,7 +46,12 @@ void execute(String jobsFile) {
         // process jobs
         processJobs(jobsModel)
         // cleanup jobs
-        JenkinsCleanupTask.cleanupJobs(definedJobs)
+        try {
+            cleanupJobs(definedJobs)
+        } catch (Exception e) {
+            println Throwables.getStackTraceAsString(e)
+            jenkinsExecutor.interrupt(Result.FAILURE)
+        }
     }
 }
 
@@ -98,12 +111,60 @@ private void processJobs(JobsModel jobsModel) {
 }
 
 /**
+ * Method, that reads current jobs from Jenkins, compares them with the
+ * defined jobs and deletes remaining Jenkins jobs.
+ *
+ * @param definedPipelineJobItemsList   list of all jobs, which are defined in the JSON job description including seed job
+ */
+void cleanupJobs(ArrayList<String> definedPipelineJobItemsList) {
+    println "[INFO][Cleanup] Starting cleanup of jobs..."
+
+    if (jenkinsInstance != null) {
+        // get all items from Jenkins
+        List<TopLevelItem> currentJenkinsJobItemsList = jenkinsInstance.items
+
+        // Iterate over the Jenkins items to find out which item exists
+        ArrayList<TopLevelItem> currentPipelineItems = []
+        for (TopLevelItem currentJenkinsJobItem in currentJenkinsJobItemsList) {
+            for (String definedPipelineJobItem in definedPipelineJobItemsList) {
+                if (currentJenkinsJobItem.fullName.startsWith(definedPipelineJobItem) || currentJenkinsJobItem.fullName.startsWith(JenkinsJobConstants.SEED_JOB_NAME)) {
+                    currentPipelineItems << currentJenkinsJobItem
+                }
+            }
+        }
+
+        // remove the pipeline items from the Jenkins job items and store them into a list
+        List<TopLevelItem> undefinedJenkinsJobsList = currentJenkinsJobItemsList.minus(currentPipelineItems)
+
+        // if we have jobs in Jenkins, which are not defined in the job model, delete them
+        if (!undefinedJenkinsJobsList.isEmpty()) {
+            println "[INFO][Cleanup] ---------------- Job items to delete ----------------"
+            println undefinedJenkinsJobsList
+            println "[INFO][Cleanup] ----------------                     ----------------"
+
+            for (TopLevelItem undefinedJenkinsItem in undefinedJenkinsJobsList) {
+                // if it is not a folder, delete the job!
+                if ('com.cloudbees.hudson.plugins.folder.Folder' != undefinedJenkinsItem.class.canonicalName) {
+                    println "[INFO][Cleanup] Deleting job [${undefinedJenkinsItem.fullName}] from Jenkins"
+                    TopLevelItem item = jenkinsInstance.getItem(undefinedJenkinsItem.fullName)
+                    item.delete()
+                }
+            }
+        }
+    } else {
+        println("[WARNING] Jenkins instance was null at JenkinsCleanupTask")
+    }
+    println "[INFO][Cleanup] Cleanup of jobs finished successful..."
+}
+
+/**
  * Create multibranchPipelineJob with Jenkins JobDSL language
  *
  * @param model Pipeline model for multibranch pipeline job
  */
 void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
     // define the job with JobDSL closure
+    println("[INFO] creating multibranch job (${multibranchModel.getJobName()})...")
     multibranchPipelineJob(multibranchModel.getJobName()) {
         factory {
             workflowBranchProjectFactory {
@@ -124,6 +185,7 @@ void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
             cron(multibranchModel.getGit().getRepositoryTrigger())
         }
     }
+    println("[INFO] finished creating multibranch job (${multibranchModel.getJobName()})")
 }
 
 /**
@@ -132,6 +194,7 @@ void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
  * @param model Pipeline model for pipeline job
  */
 void createPipelineJob(final PipelineJobModel pipelineJobModel) {
+    println("[INFO] creating pipeline job (${pipelineJobModel.getJobName()})...")
     pipelineJob(pipelineJobModel.getJobName()) {
         description(pipelineJobModel.getJobDescription())
         triggers {
@@ -154,4 +217,5 @@ void createPipelineJob(final PipelineJobModel pipelineJobModel) {
             }
         }
     }
+    println("[INFO] finished creating pipeline job (${pipelineJobModel.getJobName()})")
 }
