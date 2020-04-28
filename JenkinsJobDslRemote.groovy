@@ -32,6 +32,10 @@ void execute(String jobsFile) {
     JobsModel jobsModel = loadAndParseModel(jobsFile)
     println "[INFO][JSON Parser] Finished..."
 
+    println "[DEBUG] -start----"
+    println "[DEBUG] " + jobsModel
+    println "[DEBUG] -end----"
+
     if (jobsModel != null) {
         // Validating
         validateModel(jobsModel)
