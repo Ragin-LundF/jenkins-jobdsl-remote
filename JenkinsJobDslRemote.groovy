@@ -32,10 +32,6 @@ void execute(String jobsFile) {
     JobsModel jobsModel = loadAndParseModel(jobsFile)
     println "[INFO][JSON Parser] Finished..."
 
-    println "[DEBUG] -start----"
-    println "[DEBUG] " + jobsModel
-    println "[DEBUG] -end----"
-
     if (jobsModel != null) {
         // Validating
         validateModel(jobsModel)
@@ -108,6 +104,7 @@ private void processJobs(JobsModel jobsModel) {
  */
 void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
     // define the job with JobDSL closure
+    println("[INFO] creating multibranch job (${multibranchModel.getJobName()})...")
     multibranchPipelineJob(multibranchModel.getJobName()) {
         factory {
             workflowBranchProjectFactory {
@@ -128,6 +125,7 @@ void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
             cron(multibranchModel.getGit().getRepositoryTrigger())
         }
     }
+    println("[INFO] finished creating multibranch job (${multibranchModel.getJobName()})")
 }
 
 /**
@@ -136,6 +134,7 @@ void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
  * @param model Pipeline model for pipeline job
  */
 void createPipelineJob(final PipelineJobModel pipelineJobModel) {
+    println("[INFO] creating pipeline job (${pipelineJobModel.getJobName()})...")
     pipelineJob(pipelineJobModel.getJobName()) {
         description(pipelineJobModel.getJobDescription())
         triggers {
@@ -158,4 +157,5 @@ void createPipelineJob(final PipelineJobModel pipelineJobModel) {
             }
         }
     }
+    println("[INFO] finished creating pipeline job (${pipelineJobModel.getJobName()})")
 }
