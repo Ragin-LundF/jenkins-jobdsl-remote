@@ -1,6 +1,7 @@
 import com.google.common.base.Throwables
 import groovy.transform.Field
 import hudson.model.TopLevelItem
+import hudson.model.View
 import jenkins.model.Jenkins
 import jobs.JenkinsJobConstants
 import model.JobsModel
@@ -50,6 +51,7 @@ void execute(String jobsFile) {
             cleanupJobs(definedJobs)
             // set views
             createViewsFromJobs(jobsModel)
+            cleanupEmptyViews()
         } catch (Exception e) {
             println Throwables.getStackTraceAsString(e)
             jenkinsExecutor.interrupt(Result.FAILURE)
@@ -160,28 +162,44 @@ void cleanupJobs(ArrayList<String> definedPipelineJobItemsList) {
 }
 
 /**
+ * Cleanup empty views
+ */
+void cleanupEmptyViews() {
+    List<View> jenkinsViewList = jenkinsInstance.getViews()
+    if (jenkinsViewList != null && !jenkinsViewList.isEmpty()) {
+        for (View jenkinsView : jenkinsViewList) {
+            if (jenkinsView.getAllItems() == null) {
+                jenkinsInstance.deleteView(jenkinsView)
+            }
+        }
+    }
+}
+
+/**
  * Create Views for the jobs
  * @param jobsModel JobsModel which should be used to create the view
  */
 void createViewsFromJobs(final JobsModel jobsModel) {
     Map<String, List<String>> viewMap = Json2ModelParser.createViewModelMap(jobsModel)
-    viewMap.each {
-        String viewName = it.key
-        List<String> jobsList = it.value
-        listView(viewName) {
-            jobs {
-                for (String jobName : jobsList) {
-                    name(jobName)
+    if (viewMap != null && ! viewMap.isEmpty()) {
+        viewMap.each {
+            String viewName = it.key
+            List<String> jobsList = it.value
+            listView(viewName) {
+                jobs {
+                    for (String jobName : jobsList) {
+                        name(jobName)
+                    }
                 }
-            }
-            columns {
-                status()
-                weather()
-                name()
-                lastSuccess()
-                lastFailure()
-                lastDuration()
-                buildButton()
+                columns {
+                    status()
+                    weather()
+                    name()
+                    lastSuccess()
+                    lastFailure()
+                    lastDuration()
+                    buildButton()
+                }
             }
         }
     }
