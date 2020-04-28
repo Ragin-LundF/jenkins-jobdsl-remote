@@ -168,16 +168,20 @@ void createViewsFromJobs(final JobsModel jobsModel) {
     viewMap.each {
         String viewName = it.key
         List<String> jobsList = it.value
-        sectionedView("All") {
-            sections {
-                listView {
-                    name(viewName)
-                    jobs {
-                        for (String jobName : jobsList) {
-                            name(jobName)
-                        }
-                    }
+        listView(viewName) {
+            jobs {
+                for (String jobName : jobsList) {
+                    name(jobName)
                 }
+            }
+            columns {
+                status()
+                weather()
+                name()
+                lastSuccess()
+                lastFailure()
+                lastDuration()
+                buildButton()
             }
         }
     }
