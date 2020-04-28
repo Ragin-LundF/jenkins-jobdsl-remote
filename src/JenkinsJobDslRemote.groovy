@@ -168,7 +168,7 @@ void cleanupEmptyViews() {
     List<View> jenkinsViewList = jenkinsInstance.getViews()
     if (jenkinsViewList != null && !jenkinsViewList.isEmpty()) {
         for (View jenkinsView : jenkinsViewList) {
-            if (jenkinsView.getAllItems() == null) {
+            if (jenkinsView.getAllItems() == null || jenkinsView.getAllItems().isEmpty()) {
                 jenkinsInstance.deleteView(jenkinsView)
             }
         }
