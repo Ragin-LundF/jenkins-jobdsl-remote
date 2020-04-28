@@ -7,6 +7,8 @@ import model.MultibranchModel
 import model.PipelineJobModel
 import parser.Json2ModelParser
 import validator.ModelValidator
+import hudson.model.Executor
+import hudson.model.Result
 
 // define variables
 @Field
@@ -15,11 +17,15 @@ final String DEFAULT_PIPELINE_SCRIPT_JSON_PATH = "jobdefinition/jenkins-dsl-jobs
 ArrayList<String> definedJobs = [JenkinsJobConstants.SEED_JOB_NAME]
 
 // first get workspace directory
-hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
+Executor jenkinsExecutor = hudson.model.Executor.currentExecutor()
+hudson.FilePath workspace = jenkinsExecutor.getCurrentWorkspace()
 println "Workspace: ${workspace?.toURI()?.getPath()}"
 
 // start the script
 execute(workspace?.toURI()?.getPath() + DEFAULT_PIPELINE_SCRIPT_JSON_PATH)
+
+// finish the job
+jenkinsExecutor.interrupt(Result.SUCCESS)
 
 /**
  * Execute the job creator
