@@ -63,6 +63,9 @@ final class ModelValidator {
     private static void validatePipelineJob(final PipelineJobModel pipelineJob) {
         assert pipelineJob != null : "Pipeline job detected, but no entry found!"
         assert pipelineJob.getJobName() != null : "Found pipeline job without definition of a jobName."
+        if (pipelineJob.getRemoteTriggerUuid()?.trim()) {
+            assert pipelineJob.getRemoteTriggerUuid() ==~ /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/
+        }
         validateGitModel(pipelineJob)
     }
 

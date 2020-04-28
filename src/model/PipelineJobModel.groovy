@@ -6,4 +6,5 @@ import groovy.transform.ToString
 class PipelineJobModel extends BaseJobDslPipelineModel {
     // cron trigger to execute the job independent of scm
     String cronTrigger
+    String remoteTriggerUuid
 }

@@ -66,6 +66,7 @@ The structure of the JSON looks like described in the example on buttom.
 | `view` | string | *none* | defines the view in which the job will be shown in Jenkins. |
 | `pipelineScriptPath` | string | *MultibranchJob* or *PipelineJob* | defines the name of the `Jenkinsfile` script. (`required`) |
 | `cronTrigger` | string | *PipelineJob* | defines cron trigger, to force a build at defined times. |
+| `remoteTriggerUuid` | string | *PipelineJob* | defines a UUID that can be used to trigger a job from external scripts. |
 | `git` | object | *MultibranchJob* or *PipelineJob* | object, that contains the GIT parameter. (`required`) |
 | `repositoryId`| string | *MultibranchJob* or *PipelineJob* | defines a GIT repository ID. This is required by the SCM plugin. (`required`) |
 | `repositoryUrl`| string | *MultibranchJob* or *PipelineJob* | defines the URL to the GIT repository. (`required`) |
@@ -96,6 +97,7 @@ The structure of the JSON looks like described in the example on buttom.
       "jobDescription": "This is a test job",
       "pipelineScriptPath": "Jenkinsfile.groovy",
       "cronTrigger": "2 H * * *",
+      "remoteTriggerUuid": "618f1dae-9475-41c3-9d17-381ff3c8684e",
       "git": {
         "repositoryId": "myPipelineJobId",
         "repositoryUrl": "https://github.com/myProjects/myPipelineJobProject.git",

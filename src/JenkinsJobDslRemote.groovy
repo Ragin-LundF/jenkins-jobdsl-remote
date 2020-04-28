@@ -249,6 +249,7 @@ void createPipelineJob(final PipelineJobModel pipelineJobModel) {
             scm(pipelineJobModel.getGit().getRepositoryTrigger())
             cron(pipelineJobModel.getCronTrigger())
         }
+        authenticationToken(pipelineJobModel.getRemoteTriggerUuid())
         definition {
             cpsScm {
                 scm {

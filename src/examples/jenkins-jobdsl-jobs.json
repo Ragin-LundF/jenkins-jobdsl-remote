@@ -19,6 +19,7 @@
       "jobDescription": "This is a test job",
       "pipelineScriptPath": "Jenkinsfile.groovy",
       "cronTrigger": "2 H * * *",
+      "remoteTriggerUuid": "618f1dae-9475-41c3-9d17-381ff3c8684e",
       "git": {
         "repositoryId": "myPipelineJobId",
         "repositoryUrl": "https://github.com/myProjects/myPipelineJobProject.git",
