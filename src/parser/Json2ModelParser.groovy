@@ -43,21 +43,21 @@ final class Json2ModelParser {
      * @param baseJobDslPipelineModelList   Model which contains the jobs
      * @return  Map with syntax: key=viewName, value=List with jobName
      */
-    static Map<String, List<String>> parseJobsFromModelToView(Map<String, List<String>> viewMap, List baseJobDslPipelineModelList) {
+    static Map<String, List<String>> parseJobsFromModelToView(Map<String, List<String>> viewMap, List<BaseJobDslPipelineModel> baseJobDslPipelineModelList) {
         // check map to be sure that everything is ok
         if (viewMap == null) {
             viewMap = new HashMap<String, List<String>>()
         }
         // check the models and add the view if it is not empty
         if (baseJobDslPipelineModelList != null && ! baseJobDslPipelineModelList.isEmpty()) {
-            for (def baseJobDslPipelineModel : baseJobDslPipelineModelList) {
-                if (baseJobDslPipelineModel.getView()?.trim() && baseJobDslPipelineModel.getJobName()?.trim()) {
-                    if (viewMap.containsKey(baseJobDslPipelineModel.getView())) {
-                        viewMap.get(baseJobDslPipelineModel.getView()).add(baseJobDslPipelineModel.getJobName())
+            baseJobDslPipelineModelList.each { jobModel ->
+                if (jobModel.getView()?.trim() && jobModel.getJobName()?.trim()) {
+                    if (viewMap.containsKey(jobModel.getView())) {
+                        viewMap.get(jobModel.getView()).add(jobModel.getJobName())
                     } else {
                         List<String> jobNameList = new ArrayList<>()
-                        jobNameList.add(baseJobDslPipelineModel.getJobName())
-                        viewMap.put(baseJobDslPipelineModel.getView(), jobNameList)
+                        jobNameList.add(jobModel.getJobName())
+                        viewMap.put(jobModel.getView(), jobNameList)
                     }
                 }
             }
