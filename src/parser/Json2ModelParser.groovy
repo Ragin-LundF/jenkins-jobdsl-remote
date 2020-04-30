@@ -50,7 +50,7 @@ final class Json2ModelParser {
         }
         // check the models and add the view if it is not empty
         if (baseJobDslPipelineModelList != null && ! baseJobDslPipelineModelList.isEmpty()) {
-            for (BaseJobDslPipelineModel baseJobDslPipelineModel : baseJobDslPipelineModelList) {
+            for (def baseJobDslPipelineModel : baseJobDslPipelineModelList) {
                 if (baseJobDslPipelineModel.getView()?.trim() && baseJobDslPipelineModel.getJobName()?.trim()) {
                     if (viewMap.containsKey(baseJobDslPipelineModel.getView())) {
                         viewMap.get(baseJobDslPipelineModel.getView()).add(baseJobDslPipelineModel.getJobName())
