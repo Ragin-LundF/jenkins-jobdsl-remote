@@ -260,9 +260,10 @@ void createPipelineJob(final PipelineJobModel pipelineJobModel) {
                             String credentials = (pipelineJobModel.getGit().getCredentialsId() != null) ? pipelineJobModel.getGit().getCredentialsId() : System.getenv("GIT_CREDENTIALS_ID")
                             credentials(credentials)
                         }
-                        scriptPath(pipelineJobModel.getPipelineScriptPath())
+                        (pipelineJobModel.getRemoteBranchName() != null) ? branch("${pipelineJobModel.getRemoteBranchName()}") : ""
                     }
                 }
+                scriptPath(pipelineJobModel.getPipelineScriptPath())
             }
         }
     }

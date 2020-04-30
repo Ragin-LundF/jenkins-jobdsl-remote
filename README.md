@@ -63,14 +63,15 @@ The structure of the JSON looks like described in the example on buttom.
 | `pipelineJobs` | array | *none* | main element for pipeline jobs. It contains a list of pipelineJob objects, which are defining the jobs. |
 | `jobName` | string | *MultibranchJob* or *PipelineJob* | defines the name of the job. (`required`) |
 | `jobDescription` | string | *MultibranchJob* or *PipelineJob* | defines the description of the job, which will be shown in Jenkins. |
-| `view` | string | *none* | defines the view in which the job will be shown in Jenkins. |
+| `view` | string | *MultibranchJob* or *PipelineJob* | defines the view in which the job will be shown in Jenkins. |
 | `pipelineScriptPath` | string | *MultibranchJob* or *PipelineJob* | defines the name of the `Jenkinsfile` script. (`required`) |
 | `cronTrigger` | string | *PipelineJob* | defines cron trigger, to force a build at defined times. |
 | `remoteTriggerUuid` | string | *PipelineJob* | defines a UUID that can be used to trigger a job from external scripts. |
+| `remoteBranchName`| string | *PipelineJob* | It defines a concrete branch, that should be used for this job. |
 | `git` | object | *MultibranchJob* or *PipelineJob* | object, that contains the GIT parameter. (`required`) |
-| `repositoryId`| string | *MultibranchJob* or *PipelineJob* | defines a GIT repository ID. This is required by the SCM plugin. (`required`) |
-| `repositoryUrl`| string | *MultibranchJob* or *PipelineJob* | defines the URL to the GIT repository. (`required`) |
-| `repositoryTrigger`| string | *MultibranchJob* or *PipelineJob* | defines a trigger in cron format at which time the SCM plugin should check for new commits. |
+| `repositoryId`| string | *Git* | defines a GIT repository ID. This is required by the SCM plugin. (`required`) |
+| `repositoryUrl`| string | *Git* | defines the URL to the GIT repository. (`required`) |
+| `repositoryTrigger`| string | *Git* | defines a trigger in cron format at which time the SCM plugin should check for new commits. |
 | `credentialsId`| string | *MultibranchJob* or *PipelineJob* | defines the credentialsId, which are available through Jenkins to access a private repository. It is also possible to set a `GIT_CREDENTIALS_ID` environment variable at the build slave. If this is defined in the JSON, it overwrites the env variable. |
 
 ## Example of the JSON for the job definition ##
@@ -98,6 +99,7 @@ The structure of the JSON looks like described in the example on buttom.
       "pipelineScriptPath": "Jenkinsfile.groovy",
       "cronTrigger": "2 H * * *",
       "remoteTriggerUuid": "618f1dae-9475-41c3-9d17-381ff3c8684e",
+      "remoteBranchName": "master",
       "git": {
         "repositoryId": "myPipelineJobId",
         "repositoryUrl": "https://github.com/myProjects/myPipelineJobProject.git",
