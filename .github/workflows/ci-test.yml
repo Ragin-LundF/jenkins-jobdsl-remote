@@ -1,0 +1,33 @@
+name: CI
+on: push
+
+jobs:
+    build:
+        name: "Validate Jenkins JobDSL Remote"
+
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ubuntu-latest]
+                java: [1.8]
+
+        runs-on: ${{ matrix.os }}
+
+        steps:
+            - name: "git clone"
+              uses: actions/checkout@v1
+
+            - name: "setup jdk"
+              uses: actions/setup-java@v1
+              with:
+                  java-version: ${{ matrix.java }}
+
+            - name: "./gradlew test"
+              uses: eskatos/gradle-command-action@v1
+              with:
+                  arguments: --no-build-cache test
+              env:
+                  CI: true
+
+            - name: "git diff --exit-code"
+              run: git diff --exit-code
