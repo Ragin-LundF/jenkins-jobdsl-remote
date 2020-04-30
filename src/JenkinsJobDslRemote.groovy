@@ -257,8 +257,8 @@ void createPipelineJob(final PipelineJobModel pipelineJobModel) {
                         remote {
                             name(pipelineJobModel.getGit().getRepositoryId())
                             url(pipelineJobModel.getGit().getRepositoryUrl())
-                            String credentials = (pipelineJobModel.getGit().getCredentialsId() != null) ? pipelineJobModel.getGit().getCredentialsId() : System.getenv("GIT_CREDENTIALS_ID")
-                            credentials(credentials)
+                            String credentialsIdString = (pipelineJobModel.getGit().getCredentialsId() != null) ? pipelineJobModel.getGit().getCredentialsId() : System.getenv("GIT_CREDENTIALS_ID")
+                            credentials(credentialsIdString)
                         }
                         (pipelineJobModel.getRemoteBranchName() != null) ? branch("${pipelineJobModel.getRemoteBranchName()}") : ""
                     }
