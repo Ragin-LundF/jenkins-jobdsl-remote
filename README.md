@@ -1,5 +1,7 @@
 # Jenkins JobDSL Creation Script #
 
+![CI](https://github.com/Ragin-LundF/jenkins-jobdsl-remote/workflows/CI/badge.svg)
+
 This script can be used to load Jenkins job definitions from a remote version control system (VCS).
 
 It can be used in a `seed` job, which does a checkout of this repository and the job description.
