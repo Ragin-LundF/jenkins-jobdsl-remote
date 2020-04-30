@@ -43,7 +43,7 @@ final class Json2ModelParser {
      * @param baseJobDslPipelineModelList   Model which contains the jobs
      * @return  Map with syntax: key=viewName, value=List with jobName
      */
-    static Map<String, List<String>> parseJobsFromModelToView(Map<String, List<String>> viewMap, List<BaseJobDslPipelineModel> baseJobDslPipelineModelList) {
+    static Map<String, List<String>> parseJobsFromModelToView(Map<String, List<String>> viewMap, List<? extends BaseJobDslPipelineModel> baseJobDslPipelineModelList) {
         // check map to be sure that everything is ok
         if (viewMap == null) {
             viewMap = new HashMap<String, List<String>>()
