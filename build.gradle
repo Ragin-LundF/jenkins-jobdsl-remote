@@ -23,6 +23,14 @@ sourceSets {
             srcDirs = ['src']
         }
     }
+    test {
+        groovy {
+            srcDirs = ['test/groovy']
+        }
+        resources {
+            srcDirs = ['test/resources']
+        }
+    }
 }
 
 dependencies {

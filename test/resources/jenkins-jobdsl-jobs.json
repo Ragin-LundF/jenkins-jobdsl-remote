@@ -1,0 +1,44 @@
+{
+  "multiBranchJobs": [
+    {
+      "jobName": "firstMultiBranchJob",
+      "jobDescription": "First job",
+      "view": "mainView",
+      "pipelineScriptPath": "Jenkinsfile",
+      "git": {
+        "repositoryId": "firstMultiBranchJob",
+        "repositoryUrl": "https://github.com/myProjects/firstMultiBranchJob.git",
+        "repositoryTrigger": "* * * * *",
+        "credentialsId": "myGitCredentialsId"
+      }
+    },
+    {
+      "jobName": "secondMultiBranchJob",
+      "jobDescription": "Second job",
+      "pipelineScriptPath": "Jenkinsfile",
+      "git": {
+        "repositoryId": "secondMultiBranchJob",
+        "repositoryUrl": "https://github.com/myProjects/secondMultiBranchJob.git",
+        "repositoryTrigger": "* * * * *",
+        "credentialsId": "myGitCredentialsId"
+      }
+    }
+  ],
+  "pipelineJobs": [
+    {
+      "jobName": "myPipelineJob",
+      "jobDescription": "This is a test job",
+      "pipelineScriptPath": "Jenkinsfile.groovy",
+      "cronTrigger": "2 H * * *",
+      "view": "pipelineView",
+      "remoteTriggerUuid": "618f1dae-9475-41c3-9d17-381ff3c8684e",
+      "remoteBranchName": "master",
+      "git": {
+        "repositoryId": "myPipelineJobId",
+        "repositoryUrl": "https://github.com/myProjects/myPipelineJobProject.git",
+        "repositoryTrigger": "* * * * *",
+        "credentialsId": "myGitCredentialsId"
+      }
+    }
+  ]
+}
