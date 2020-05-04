@@ -230,7 +230,7 @@ void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
         }
         description(multibranchModel.getJobDescription())
         triggers {
-            cron(multibranchModel.getGit().getRepositoryTrigger())
+            (multibranchModel.getGit().getRepositoryTrigger() != null) ? cron(multibranchModel.getGit().getRepositoryTrigger()) : ""
         }
     }
     println("[INFO] finished creating multibranch job (${multibranchModel.getJobName()})")
@@ -246,10 +246,10 @@ void createPipelineJob(final PipelineJobModel pipelineJobModel) {
     pipelineJob(pipelineJobModel.getJobName()) {
         description(pipelineJobModel.getJobDescription())
         triggers {
-            scm(pipelineJobModel.getGit().getRepositoryTrigger())
-            cron(pipelineJobModel.getCronTrigger())
+            (pipelineJobModel.getGit().getRepositoryTrigger() != null) ? scm(pipelineJobModel.getGit().getRepositoryTrigger()) : ""
+            (pipelineJobModel.getCronTrigger() != null) ? cron(pipelineJobModel.getCronTrigger()) : ""
         }
-        authenticationToken(pipelineJobModel.getRemoteTriggerUuid())
+        (pipelineJobModel.getRemoteTriggerUuid() != null) ? authenticationToken(pipelineJobModel.getRemoteTriggerUuid()) : ""
         definition {
             cpsScm {
                 scm {
