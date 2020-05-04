@@ -232,11 +232,11 @@ void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
         triggers {
             (multibranchModel.getGit().getRepositoryTrigger() != null) ? cron(multibranchModel.getGit().getRepositoryTrigger()) : ""
         }
-        if (pipelineJobModel.getLogRotator() != null && (pipelineJobModel.getLogRotator().getDaysToKeep() != null || pipelineJobModel.getLogRotator().getNumToKeep() != null)) {
+        if (multibranchModel.getLogRotator() != null && (multibranchModel.getLogRotator().getDaysToKeep() != null || multibranchModel.getLogRotator().getNumToKeep() != null)) {
             orphanedItemStrategy {
                 discardOldItems {
-                    (pipelineJobModel.getLogRotator().getDaysToKeep() != null) ? daysToKeep(pipelineJobModel.getLogRotator().getDaysToKeep()) : ""
-                    (pipelineJobModel.getLogRotator().getNumToKeep() != null) ? numToKeep(pipelineJobModel.getLogRotator().getNumToKeep()) : ""
+                    (multibranchModel.getLogRotator().getDaysToKeep() != null) ? daysToKeep(multibranchModel.getLogRotator().getDaysToKeep()) : ""
+                    (multibranchModel.getLogRotator().getNumToKeep() != null) ? numToKeep(multibranchModel.getLogRotator().getNumToKeep()) : ""
                 }
             }
         }
