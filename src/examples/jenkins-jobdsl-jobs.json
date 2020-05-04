@@ -10,6 +10,10 @@
         "repositoryUrl": "https://github.com/myProjects/myMultibranchProject.git",
         "repositoryTrigger": "* * * * *",
         "credentialsId": "myGitCredentialsId"
+      },
+      "logRotator": {
+        "daysToKeep": 10,
+        "numToKeep": 5
       }
     }
   ],
@@ -26,6 +30,10 @@
         "repositoryUrl": "https://github.com/myProjects/myPipelineJobProject.git",
         "repositoryTrigger": "* * * * *",
         "credentialsId": "myGitCredentialsId"
+      },
+      "logRotator": {
+        "daysToKeep": 10,
+        "numToKeep": 5
       }
     }
   ]

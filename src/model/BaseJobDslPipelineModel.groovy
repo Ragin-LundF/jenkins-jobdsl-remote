@@ -4,9 +4,29 @@ import groovy.transform.ToString
 
 @ToString(includeNames = true, includeFields = true, ignoreNulls = true)
 class BaseJobDslPipelineModel {
+    /**
+     * Name of the job (mandatory)
+     */
     String jobName
+    /**
+     * Description of the job (mandatory)
+     */
     String jobDescription
-    String pipelineScriptPath
+    /**
+     * Path to the Jenkins pipeline script like Jenkinsfile (optional)
+     * Default: Jenkinsfile
+     */
+    String pipelineScriptPath = "Jenkinsfile"
+    /**
+     * View to which this job should be assigned (optional)
+     */
     String view
+    /**
+     * Log rotators for the job (optional)
+     */
+    LogRotator logRotator = new LogRotator()
+    /**
+     * Git Model for the repository (mandatory)
+     */
     GitModel git
 }

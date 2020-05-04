@@ -10,6 +10,10 @@
         "repositoryUrl": "https://github.com/myProjects/firstMultiBranchJob.git",
         "repositoryTrigger": "* * * * *",
         "credentialsId": "myGitCredentialsId"
+      },
+      "logRotator": {
+        "daysToKeep": null,
+        "numToKeep": null
       }
     },
     {
@@ -19,6 +23,21 @@
       "git": {
         "repositoryId": "secondMultiBranchJob",
         "repositoryUrl": "https://github.com/myProjects/secondMultiBranchJob.git",
+        "repositoryTrigger": "* * * * *",
+        "credentialsId": "myGitCredentialsId"
+      },
+      "logRotator": {
+        "daysToKeep": 15,
+        "numToKeep": 10
+      }
+    },
+    {
+      "jobName": "thirdMultiBranchJob",
+      "jobDescription": "Third job",
+      "pipelineScriptPath": "Jenkinsfile",
+      "git": {
+        "repositoryId": "thirdMultiBranchJob",
+        "repositoryUrl": "https://github.com/myProjects/thirdMultiBranchJob.git",
         "repositoryTrigger": "* * * * *",
         "credentialsId": "myGitCredentialsId"
       }
@@ -38,6 +57,10 @@
         "repositoryUrl": "https://github.com/myProjects/myPipelineJobProject.git",
         "repositoryTrigger": "* * * * *",
         "credentialsId": "myGitCredentialsId"
+      },
+      "logRotator": {
+        "daysToKeep": 15,
+        "numToKeep": 10
       }
     }
   ]

@@ -232,6 +232,14 @@ void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
         triggers {
             (multibranchModel.getGit().getRepositoryTrigger() != null) ? cron(multibranchModel.getGit().getRepositoryTrigger()) : ""
         }
+        if (pipelineJobModel.getLogRotator() != null && (pipelineJobModel.getLogRotator().getDaysToKeep() != null || pipelineJobModel.getLogRotator().getNumToKeep() != null)) {
+            orphanedItemStrategy {
+                discardOldItems {
+                    (pipelineJobModel.getLogRotator().getDaysToKeep() != null) ? daysToKeep(pipelineJobModel.getLogRotator().getDaysToKeep()) : ""
+                    (pipelineJobModel.getLogRotator().getNumToKeep() != null) ? numToKeep(pipelineJobModel.getLogRotator().getNumToKeep()) : ""
+                }
+            }
+        }
     }
     println("[INFO] finished creating multibranch job (${multibranchModel.getJobName()})")
 }
@@ -264,6 +272,12 @@ void createPipelineJob(final PipelineJobModel pipelineJobModel) {
                     }
                 }
                 scriptPath(pipelineJobModel.getPipelineScriptPath())
+            }
+        }
+        if (pipelineJobModel.getLogRotator() != null && (pipelineJobModel.getLogRotator().getDaysToKeep() != null || pipelineJobModel.getLogRotator().getNumToKeep() != null)) {
+            logRotator {
+                (pipelineJobModel.getLogRotator().getDaysToKeep() != null) ? daysToKeep(pipelineJobModel.getLogRotator().getDaysToKeep()) : ""
+                (pipelineJobModel.getLogRotator().getNumToKeep() != null) ? artifactNumToKeep(pipelineJobModel.getLogRotator().getNumToKeep()) : ""
             }
         }
     }

@@ -14,7 +14,7 @@ class Json2ModelParserTest extends GroovyTestCase {
         // assert basic structure
         assertNotNull(jenkinsJobModel.multiBranchJobs)
         assertNotNull(jenkinsJobModel.pipelineJobs)
-        assertEquals(2, jenkinsJobModel.multiBranchJobs.size())
+        assertEquals(3, jenkinsJobModel.multiBranchJobs.size())
         assertEquals(1, jenkinsJobModel.pipelineJobs.size())
 
         // validate multibranchModel
@@ -27,6 +27,8 @@ class Json2ModelParserTest extends GroovyTestCase {
                 "https://github.com/myProjects/firstMultiBranchJob.git",
                 "* * * * *",
                 "myGitCredentialsId",
+                null,
+                null,
                 jenkinsJobModel.multiBranchJobs.get(0) as MultibranchModel
         )
         assertEqualsMultiBranchJobModel(
@@ -38,7 +40,22 @@ class Json2ModelParserTest extends GroovyTestCase {
                 "https://github.com/myProjects/secondMultiBranchJob.git",
                 "* * * * *",
                 "myGitCredentialsId",
+                10,
+                15,
                 jenkinsJobModel.multiBranchJobs.get(1) as MultibranchModel
+        )
+        assertEqualsMultiBranchJobModel(
+                "thirdMultiBranchJob",
+                "Third job",
+                null,
+                "Jenkinsfile",
+                "thirdMultiBranchJob",
+                "https://github.com/myProjects/thirdMultiBranchJob.git",
+                "* * * * *",
+                "myGitCredentialsId",
+                5,
+                10,
+                jenkinsJobModel.multiBranchJobs.get(2) as MultibranchModel
         )
 
         // validate pipelineJob
@@ -54,6 +71,8 @@ class Json2ModelParserTest extends GroovyTestCase {
                 "https://github.com/myProjects/myPipelineJobProject.git",
                 "* * * * *",
                 "myGitCredentialsId",
+                10,
+                15,
                 jenkinsJobModel.pipelineJobs.get(0) as PipelineJobModel
         )
     }
@@ -83,6 +102,8 @@ class Json2ModelParserTest extends GroovyTestCase {
      * @param gitRepositoryUrl      expected repositoryUrl of the Git object of the multibranch job
      * @param gitRepositoryTrigger  expected repositoryTrigger of the Git object of the multibranch job
      * @param gitCredentialsId      expected credentialsId of the Git object of the multibranch job
+     * @param logRotatorNumToKeep   expected logRotator.numToKeep of the multibranch job
+     * @param logRotatorDaysToKeep  expected logRotator.daysToKeep of the multibranch job
      * @param multibranchModel      filled instance of MultiBranchModel which should be compared (actual)
      */
     private void assertEqualsMultiBranchJobModel(
@@ -94,12 +115,22 @@ class Json2ModelParserTest extends GroovyTestCase {
             String gitRepositoryUrl,
             String gitRepositoryTrigger,
             String gitCredentialsId,
+            Integer logRotatorNumToKeep,
+            Integer logRotatorDaysToKeep,
             MultibranchModel multibranchModel
     ) {
+        // basic data
         assertEquals(jobName, multibranchModel.jobName)
         assertEquals(jobDescription, multibranchModel.jobDescription)
         assertEquals(view, multibranchModel.view)
         assertEquals(pipelineScriptPath, multibranchModel.pipelineScriptPath)
+
+        // log rotate data
+        assertNotNull(multibranchModel.logRotator)
+        assertEquals(logRotatorDaysToKeep, multibranchModel.logRotator.daysToKeep)
+        assertEquals(logRotatorNumToKeep, multibranchModel.logRotator.numToKeep)
+
+        // git data
         assertNotNull(multibranchModel.git)
         assertEquals(gitRepositoryId, multibranchModel.git.repositoryId)
         assertEquals(gitRepositoryUrl, multibranchModel.git.repositoryUrl)
@@ -107,19 +138,21 @@ class Json2ModelParserTest extends GroovyTestCase {
         assertEquals(gitCredentialsId, multibranchModel.git.credentialsId)
     }
     /**
-     * Check the MultibranchModel
+     * Check the PipelineJobModel
      *
-     * @param jobName               expected name of the multibranch job
-     * @param jobDescription        expected description of the multibranch job
-     * @param view                  expected view of the multibranch job
-     * @param pipelineScriptPath    expected pipeline scriptPath of the multibranch job
-     * @param cronTrigger           expected cronTrigger of the multibranch job
-     * @param remoteTriggerUuid     expected remoteTriggerUuid of the multibranch job
-     * @param remoteBranchName      expected remoteBranchName of the multibranch job
-     * @param gitRepositoryId       expected repositoryId of the Git object of the multibranch job
-     * @param gitRepositoryUrl      expected repositoryUrl of the Git object of the multibranch job
-     * @param gitRepositoryTrigger  expected repositoryTrigger of the Git object of the multibranch job
-     * @param gitCredentialsId      expected credentialsId of the Git object of the multibranch job
+     * @param jobName               expected name of the pipeline job
+     * @param jobDescription        expected description of the pipeline job
+     * @param view                  expected view of the pipeline job
+     * @param pipelineScriptPath    expected pipeline scriptPath of the pipeline job
+     * @param cronTrigger           expected cronTrigger of the pipeline job
+     * @param remoteTriggerUuid     expected remoteTriggerUuid of the pipeline job
+     * @param remoteBranchName      expected remoteBranchName of the pipeline job
+     * @param gitRepositoryId       expected repositoryId of the Git object of the pipeline job
+     * @param gitRepositoryUrl      expected repositoryUrl of the Git object of the pipeline job
+     * @param gitRepositoryTrigger  expected repositoryTrigger of the Git object of the pipeline job
+     * @param gitCredentialsId      expected credentialsId of the Git object of the pipeline job
+     * @param logRotatorNumToKeep   expected logRotator.numToKeep of the pipeline job
+     * @param logRotatorDaysToKeep  expected logRotator.daysToKeep of the pipeline job
      * @param pipelineJobModel      filled instance of MultiBranchModel which should be compared (actual)
      */
     private void assertEqualsPipelineJobModel(
@@ -134,8 +167,11 @@ class Json2ModelParserTest extends GroovyTestCase {
             String gitRepositoryUrl,
             String gitRepositoryTrigger,
             String gitCredentialsId,
+            Integer logRotatorNumToKeep,
+            Integer logRotatorDaysToKeep,
             PipelineJobModel pipelineJobModel
     ) {
+        // basic job data
         assertEquals(jobName, pipelineJobModel.jobName)
         assertEquals(jobDescription, pipelineJobModel.jobDescription)
         assertEquals(view, pipelineJobModel.view)
@@ -143,6 +179,13 @@ class Json2ModelParserTest extends GroovyTestCase {
         assertEquals(cronTrigger, pipelineJobModel.cronTrigger)
         assertEquals(remoteTriggerUuid, pipelineJobModel.remoteTriggerUuid)
         assertEquals(remoteBranchName, pipelineJobModel.remoteBranchName)
+
+        // log rotator data
+        assertNotNull(pipelineJobModel.logRotator)
+        assertEquals(logRotatorDaysToKeep, pipelineJobModel.logRotator.daysToKeep)
+        assertEquals(logRotatorNumToKeep, pipelineJobModel.logRotator.numToKeep)
+
+        // git data
         assertNotNull(pipelineJobModel.git)
         assertEquals(gitRepositoryId, pipelineJobModel.git.repositoryId)
         assertEquals(gitRepositoryUrl, pipelineJobModel.git.repositoryUrl)

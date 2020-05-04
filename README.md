@@ -75,6 +75,9 @@ The structure of the JSON looks like described in the example on buttom.
 | `repositoryUrl`| string | *Git* | defines the URL to the GIT repository. (`required`) |
 | `repositoryTrigger`| string | *Git* | defines a trigger in cron format at which time the SCM plugin should check for new commits. |
 | `credentialsId`| string | *MultibranchJob* or *PipelineJob* | defines the credentialsId, which are available through Jenkins to access a private repository. It is also possible to set a `GIT_CREDENTIALS_ID` environment variable at the build slave. If this is defined in the JSON, it overwrites the env variable. |
+| `logRotator` | object | *MultibranchJob* or *PipelineJob* | object, that contains the log rotation parameter. Can be set to null, if no logs should be rotated. |
+| `daysToKeep` | integer | *logRotator* | defines how many days the artifact and history should be kept. `Default: 10`. Can be set to null for unlimited. |
+| `numToKeep` | integer | *logRotator* | defines how many entries of the history should be kept. `Default: 5`. Can be set to null for unlimited. |
 
 ## Example of the JSON for the job definition ##
 
@@ -91,7 +94,11 @@ The structure of the JSON looks like described in the example on buttom.
         "repositoryUrl": "https://github.com/myProjects/myMultibranchProject.git",
         "repositoryTrigger": "* * * * *",
         "credentialsId": "myGitCredentialsId"
-      }
+      },
+      "logRotator": {
+        "daysToKeep": 10,
+        "numToKeep": 5
+      } 
     }
   ],
   "pipelineJobs": [
@@ -107,7 +114,11 @@ The structure of the JSON looks like described in the example on buttom.
         "repositoryUrl": "https://github.com/myProjects/myPipelineJobProject.git",
         "repositoryTrigger": "* * * * *",
         "credentialsId": "myGitCredentialsId"
-      }
+      },
+      "logRotator": {
+        "daysToKeep": 10,
+        "numToKeep": 5
+      } 
     }
   ]
 }
