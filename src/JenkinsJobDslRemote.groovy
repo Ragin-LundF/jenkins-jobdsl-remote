@@ -254,7 +254,6 @@ void createPipelineJob(final PipelineJobModel pipelineJobModel) {
     println("[INFO] creating pipeline job (${pipelineJobModel.getJobName()})...")
     pipelineJob(pipelineJobModel.getJobName()) {
         description(pipelineJobModel.getJobDescription())
-        (pipelineJobModel.getDisabled() != null && pipelineJobModel.getDisabled()) ? disabled(true) : disabled(false)
         triggers {
             (pipelineJobModel.getGit().getRepositoryTrigger() != null) ? scm(pipelineJobModel.getGit().getRepositoryTrigger()) : ""
             (pipelineJobModel.getCronTrigger() != null) ? cron(pipelineJobModel.getCronTrigger()) : ""
