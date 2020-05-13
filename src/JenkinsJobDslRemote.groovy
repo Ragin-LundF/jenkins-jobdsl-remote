@@ -250,7 +250,6 @@ void createMultibranchPipelineJob(final MultibranchModel multibranchModel) {
  * @param model Pipeline model for pipeline job
  */
 void createPipelineJob(final PipelineJobModel pipelineJobModel) {
-    println("Disabled: " +pipelineJobModel.getDisabled())
     println("[INFO] creating pipeline job (${pipelineJobModel.getJobName()})...")
     pipelineJob(pipelineJobModel.getJobName()) {
         description(pipelineJobModel.getJobDescription())
