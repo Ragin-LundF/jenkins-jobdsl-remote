@@ -19,6 +19,7 @@
   ],
   "pipelineJobs": [
     {
+      "disabled": false,
       "jobName": "myPipelineJob",
       "jobDescription": "This is a test job",
       "pipelineScriptPath": "Jenkinsfile.groovy",

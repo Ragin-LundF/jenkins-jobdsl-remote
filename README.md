@@ -63,6 +63,7 @@ The structure of the JSON looks like described in the example on buttom.
 | --- | --- | --- | --- | 
 | `multiBranchJobs` | array | *none* | main element for multibranch jobs. It contains a list of multibranch objects, which are defining the jobs. |
 | `pipelineJobs` | array | *none* | main element for pipeline jobs. It contains a list of pipelineJob objects, which are defining the jobs. |
+| `disabled` | boolean | *PipelineJob* | Disable a pipeline job. `Default:false`) |
 | `jobName` | string | *MultibranchJob* or *PipelineJob* | defines the name of the job. (`required`) |
 | `jobDescription` | string | *MultibranchJob* or *PipelineJob* | defines the description of the job, which will be shown in Jenkins. |
 | `view` | string | *MultibranchJob* or *PipelineJob* | defines the view in which the job will be shown in Jenkins. |
@@ -103,6 +104,7 @@ The structure of the JSON looks like described in the example on buttom.
   ],
   "pipelineJobs": [
     {
+      "disabled": false,
       "jobName": "myPipelineJob",
       "jobDescription": "This is a test job",
       "pipelineScriptPath": "Jenkinsfile.groovy",

@@ -5,6 +5,10 @@ import groovy.transform.ToString
 @ToString(includeNames = true, includeFields = true, ignoreNulls = true)
 class BaseJobDslPipelineModel {
     /**
+     * Is this job disabled (optional; default: false)
+     */
+    String disabled = false
+    /**
      * Name of the job (mandatory)
      */
     String jobName
